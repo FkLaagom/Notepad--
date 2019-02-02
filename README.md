@@ -1,5 +1,2 @@
 # Notepad--
-A fully Unintegrated Text-Editor
-## Written in MS-DOS
-
-#Currently Looking 
+A fully Unintegrated Text-Editor Written in MS-DOS
