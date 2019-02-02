@@ -43,9 +43,8 @@ cd %storagefolder%
     if %isGui%==TRUE call :mLoadGui WRITE TO NEW FILE
     echo:
     echo Enter File Name:
-    set filetype=.txt
     set /p filename=
-    echo filename
+    set "%filename%+=.txt"
     pause 
     if %isGui%==TRUE call :mLoadGui %filename%
        
