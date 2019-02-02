@@ -41,16 +41,20 @@ cd %storagefolder%
 ::********************************************************************************************
 :mWrite
     if %isGui%==TRUE call :mLoadGui WRITE TO NEW FILE
-    echo To Stop Writing Input /quit
     echo:
-    echo Enter File Name xxx.txt:
+    echo Enter File Name:
+    set filetype=.txt
     set /p filename=
-    if %isGui%==TRUE call :mLoadGui call :mLoadGui %filename%
+    echo filename
+    pause 
+    if %isGui%==TRUE call :mLoadGui %filename%
+       
         :writer
             set /p input=
                 if %input%==/quit goto :mHome
             %input% >> filename
         goto :writer    
+
 goto :mHome
 EXIT /B
 :
