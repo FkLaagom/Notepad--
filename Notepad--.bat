@@ -25,10 +25,10 @@ cd %storagefolder%
 :
 ::********************************************************************************************
 :mList
-    if %isGui%==TRUE call :mLoadGui call :mLoadGui WRITE TO EXISTING FILE
+    if %isGui%==TRUE call :mLoadGui WRITE TO EXISTING FILE
     set /a counter=0
     for %%x IN (*.txt) DO echo %%x & set counter=+1
-    if counter==0 echo (No Files Fond! & echo: ) else ( 
+    if counter==0 ( echo No Files Fond! & echo: ) else ( 
         echo:
         echo To Edit Enter [filname.txt]
         set /p input=
@@ -40,7 +40,7 @@ cd %storagefolder%
     
 ::********************************************************************************************
 :mWrite
-    if %isGui%==TRUE call :mLoadGui call :mLoadGui  WRITE TO NEW FILE
+    if %isGui%==TRUE call :mLoadGui WRITE TO NEW FILE
     echo To Stop Writing Input /quit
     echo:
     echo Enter File Name xxx.txt:
@@ -56,7 +56,7 @@ EXIT /B
 :
 ::********************************************************************************************
 :mEdit
-    if %isGui%==TRUE call :mLoadGui call :mLoadGui %~1
+    if %isGui%==TRUE call :mLoadGui %~1
         :writer
             set /p input=
                 if %input%==/quit goto :mHome
@@ -170,7 +170,7 @@ goto :mHome
 :
 ::********************************************************************************************
 :mPowersyntax
-    if %isGui%==TRUE call :mLoadGui call :mLoadGui POWERSYNTAX
+    if %isGui%==TRUE call :mLoadGui POWERSYNTAX
     echo [qwdpok] = PowerUser/Syntax               
     echo [pokqwd] = Home
     echo [qwepok] = New File
