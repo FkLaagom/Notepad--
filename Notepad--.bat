@@ -25,10 +25,10 @@ cd %storagefolder%
 :
 ::********************************************************************************************
 :mList
-    if %isGui%==TRUE call :mLoadGui WRITE TO EXISTING FILE
+    if %isGui%==TRUE call :mLoadGui  WRITE TO EXISTING FILE
     set /a counter=0
     for %%x IN (*.txt) DO echo %%x & set counter=+1
-    if counter==0 ( echo No Files Fond! & echo: ) else ( 
+    if counter==0 echo (No Files Fond! & echo: ) else ( 
         echo:
         echo To Edit Enter [filname.txt]
         set /p input=
@@ -41,25 +41,23 @@ cd %storagefolder%
 ::********************************************************************************************
 :mWrite
     if %isGui%==TRUE call :mLoadGui WRITE TO NEW FILE
+    echo To Stop Writing Input /quit
     echo:
     echo Enter File Name:
     set /p filename=
-    set "%filename%+=.txt"
-    pause 
+    %filename% >> %filename%%.txt%
     if %isGui%==TRUE call :mLoadGui %filename%
-       
         :writer
             set /p input=
-                if %input%==/quit goto :mHome
-            %input% >> filename
+                ::if %input%==/quit goto :mHome
+            echo %input% > %filename% < nul
         goto :writer    
-
 goto :mHome
 EXIT /B
 :
 ::********************************************************************************************
 :mEdit
-    if %isGui%==TRUE call :mLoadGui %~1
+    if %isGui%==TRUE call :mLoadGui  %~1
         :writer
             set /p input=
                 if %input%==/quit goto :mHome
@@ -133,10 +131,12 @@ goto :mHome
         if %input%==2 (
             if %isDarkTheme%==TRUE (
                 set isDarkTheme=FALSE
+                color f0
                 echo 2 %isDarkTheme%
                     ) else (
                         echo 3 %isDarkTheme%
                         set isDarkTheme=TRUE
+                        color 0f
                     ) 
             )  
     call :mInputChecker 0
@@ -173,7 +173,7 @@ goto :mHome
 :
 ::********************************************************************************************
 :mPowersyntax
-    if %isGui%==TRUE call :mLoadGui POWERSYNTAX
+    if %isGui%==TRUE call :mLoadGui call :mLoadGui POWERSYNTAX
     echo [qwdpok] = PowerUser/Syntax               
     echo [pokqwd] = Home
     echo [qwepok] = New File
