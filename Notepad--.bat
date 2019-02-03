@@ -166,8 +166,6 @@ goto :mHome
     echo                     -Mahatma Gandhi
     echo:
     echo             [1]''Become A Power User Today!''
-    echo                     -HackerMan1337
-    echo             [/command]   
     echo:
     set /p input=
     call :mInputChecker 0
