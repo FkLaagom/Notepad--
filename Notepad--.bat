@@ -45,13 +45,14 @@ cd %storagefolder%
     echo:
     echo Enter File Name:
     set /p filename=
-    %filename% >> %filename%%.txt%
+    %filename% > %filename%%.txt%
     if %isGui%==TRUE call :mLoadGui %filename%
-        :writer
+        :writer1
             set /p input=
-                ::if %input%==/quit goto :mHome
-            echo %input% > %filename% < nul
-        goto :writer    
+                if %input%==/quit goto :mHome
+            echo %input% >> %filename%
+        :
+        goto :writer1    
 goto :mHome
 EXIT /B
 :
