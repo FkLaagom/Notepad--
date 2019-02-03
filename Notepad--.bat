@@ -16,16 +16,16 @@ cd %storagefolder%
     echo [4] Commands ^& Settings
     echo:
     set /p input=
-    if %input% ==1 goto mWrite
-    if %input% ==2 goto mList 
-    if %input% ==3 goto mDelete
+    if %input% ==1 goto :mWrite
+    if %input% ==2 goto :mList 
+    if %input% ==3 goto :mDelete
     if %input% ==4 goto :mCommands 
     call :mInputChecker menu
     goto :mHome
 :
 ::********************************************************************************************
 :mList
-    if %isGui%==TRUE call :mLoadGui  WRITE TO EXISTING FILE
+    if %isGui%==TRUE call :mLoadGui WRITE TO EXISTING FILE
     set /a counter=0
     for %%x IN (*.txt) DO echo %%x & set counter=+1
     if counter==0 echo (No Files Fond! & echo: ) else ( 
@@ -69,14 +69,14 @@ EXIT /B
 ::********************************************************************************************
 :mDelete
     if %isGui%==TRUE call :mLoadGui DEATH
-    echo NOT TESTED DO NOT USE
     echo THIS WILL DELETE ALL .txt FILES IN CURRENT DIR!
-    echo ["DELETEIMUS-MAXIMUS"] To Confirm:
-    
-        set /r input=
-            if(input==DELETEMUS-MAXIMUS) DEL *.txt
-            call :mInputChecker
+    pause
+    REM echo ["DELETEIMUS-MAXIMUS"] To Confirm:
+    REM         set /r input=
+    REM         if %input%==DELETEMUS-MAXIMUS DEL *.txt
+    REM         call :mInputChecker 0
 goto :mHome
+:
 ::********************************************************************************************
 :mInputChecker
     ::POWERUSER::
@@ -113,7 +113,8 @@ goto :mHome
     if %isGui%==TRUE call :mLoadGui SETTINGS
     echo [1] Turn OFF/ON GUI
     echo - Commonly Used by Security Agencies like NSA, KGB
-    echo aswell as enthusiasts and powerusers to optimize performance. 
+    echo aswell as enthusiasts and powerusers to optimize performance.
+    echo: 
     echo [2] Toggle Dark / Light Theme
     echo:
     set /p input=     
@@ -173,7 +174,7 @@ goto :mHome
 :
 ::********************************************************************************************
 :mPowersyntax
-    if %isGui%==TRUE call :mLoadGui call :mLoadGui POWERSYNTAX
+    if %isGui%==TRUE call :mLoadGui POWERSYNTAX
     echo [qwdpok] = PowerUser/Syntax               
     echo [pokqwd] = Home
     echo [qwepok] = New File
