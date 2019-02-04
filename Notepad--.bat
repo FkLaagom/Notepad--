@@ -9,7 +9,8 @@ if NOT EXIST %storagefolder% MD %storagefolder%
 cd %storagefolder%
 ::********************************************************************************************
 :mHome
-    if %isGui%==TRUE call :mLoadGui HOME
+    if %isGui%==TRUE ( call :mLoadGui HOME ) else ( call :mLoadTui HOME )
+    ::if %isGui%==FALSE cls
     echo [1] Create Note
     echo [2] List ^& ^Edit Notes
     echo [3] Delete All Notes
@@ -25,12 +26,12 @@ cd %storagefolder%
 :
 ::********************************************************************************************
 :mList
-    if %isGui%==TRUE call :mLoadGui "WRITE TO EXISTING FILE"
+    if %isGui%==TRUE ( call :mLoadGui "WRITE TO EXISTING FILE" ) else ( call :mLoadTui "WRITE TO EXISTING FILE" )
     set /a counter=0
-    for %%x IN (*.txt) DO (echo %%x & set counter=+1)
+    for %%x IN (*.*) DO (echo %%x & set counter=+1)
     if counter==0 ( echo No Files Fond! & echo: ) else ( 
         echo:
-        echo To Edit Enter [filname.txt]
+        echo ENTER FILE TO EDIT!
         set /p input=
         goto :mEdit %input%
     )
@@ -40,10 +41,10 @@ cd %storagefolder%
     
 ::********************************************************************************************
 :mWrite
-    if %isGui%==TRUE call :mLoadGui "WRITE TO NEW FILE"
+    if %isGui%==TRUE ( call :mLoadGui "WRITE TO NEW FILE" ) else ( call :mLoadTui "WRITE TO NEW FILE")
     echo To Stop Writing Input /quit
+    echo Enter Filename:
     echo:
-    echo Enter File Name:
     set /p filename=
     %filename% > %filename%%.txt%
     if %isGui%==TRUE call :mLoadGui %filename%
@@ -58,25 +59,27 @@ EXIT /B
 :
 ::********************************************************************************************
 :mEdit
-    if %isGui%==TRUE call :mLoadGui  %~1
+    if %isGui%==TRUE ( call :mLoadGui  %input% ) else ( call :mLoadTui  %input% )
+        echo To Stop Writing Input /quit
+        set filename=%input%
+        TYPE %filename%
         :writer
             set /p input=
                 if %input%==/quit goto :mHome
-            %input% > %~1
+           echo %input% >> %filename%
         :
-        goto :writer    
+        goto :writer
 goto :mHome
 EXIT /B
 :
 ::********************************************************************************************
 :mDelete
-    if %isGui%==TRUE call :mLoadGui DEATH
-    echo THIS WILL DELETE ALL .txt FILES IN CURRENT DIR!
-    pause
-    REM echo ["DELETEIMUS-MAXIMUS"] To Confirm:
-    REM         set /r input=
-    REM         if %input%==DELETEMUS-MAXIMUS DEL *.txt
-    REM         call :mInputChecker 0
+    if %isGui%==TRUE ( call :mLoadGui  DEATH ) else ( call :mLoadTui DEATH )
+    echo THIS WILL DELETE ALL .txt FILES IN ShitNote Folder!
+    echo [DELETIMUS-MAXIMUS] To Confirm:
+            set /p input=
+            if %input%==DELETIMUS-MAXIMUS DEL /Q *.* & ECHO ALL FILES DELETED! & pause
+            call :mInputChecker 0
 goto :mHome
 :
 ::********************************************************************************************
@@ -84,20 +87,20 @@ goto :mHome
     ::POWERUSER::
     if %input% ==pokqwd goto :mHome
     if %input% ==qwdpok goto :mPowersyntax
-    if %input% ==qwepok goto :mPowerUser
     if %input% ==asdpok goto :mWrite
 
     ::NOOBSYNTAX::
-    if %input% ==/help call :mCommands
-    if %input% ==/home call :mHome
-    if %input% ==/settings call :mSettings
-    if %input% ==/poweruser call :mPowerUser
+    if %input% ==/help goto :mCommands
+    if %input% ==/home goto :mHome
+    if %input% ==/settings goto :mSettings
+    if %input% ==/poweruser goto :mPowerUser
     if %input% ==/exit goto :mExit
     if %~1==menu goto:mHome
+EXIT /B    
 :
 ::********************************************************************************************
 :mCommands
-    if %isGui%==TRUE call :mLoadGui COMMANDS
+    if %isGui%==TRUE ( call :mLoadGui  COMMANDS ) else ( call :mLoadTui COMMANDS )
     echo Can be used ^at any ^time!
     echo:
     echo /help
@@ -112,8 +115,9 @@ goto :mHome
 :
 ::********************************************************************************************
 :mSettings
-    if %isGui%==TRUE call :mLoadGui SETTINGS
+    if %isGui%==TRUE ( call :mLoadGui  SETTINGS ) else ( call :mLoadTui SETTINGS )
     echo [1] Turn OFF/ON GUI
+    echo:
     echo - Commonly Used by Security Agencies like NSA, KGB
     echo aswell as enthusiasts and powerusers to optimize performance.
     echo: 
@@ -124,20 +128,16 @@ goto :mHome
         if %input%==1 (
             if %isGui%==TRUE (
                 set isGui=FALSE
-                echo 1 isGUI: %isGui%
                     ) else (
-                        echo 2: isGUI: %isGui%
                         set isGui=TRUE
-                    ) 
+                    )
             )  
         
         if %input%==2 (
             if %isDarkTheme%==TRUE (
                 set isDarkTheme=FALSE
                 color f0
-                echo 2 %isDarkTheme%
                     ) else (
-                        echo 3 %isDarkTheme%
                         set isDarkTheme=TRUE
                         color 0f
                     ) 
@@ -147,7 +147,7 @@ goto :mHome
 :
 ::********************************************************************************************
 :mPoweruser
-    if %isGui%==TRUE call :mLoadGui POWERUSER
+    if %isGui%==TRUE ( call :mLoadGui POWER-USER ) else ( call :mLoadTui POWER-USER )
     echo Notepad-- is without question one of the most popular,
     echo breathtaking computer software ever achivement by Mankind.
     echo Both major corporations and startups rely on this
@@ -174,12 +174,11 @@ goto :mHome
 :
 ::********************************************************************************************
 :mPowersyntax
-    if %isGui%==TRUE call :mLoadGui POWERSYNTAX
+    if %isGui%==TRUE ( call :mLoadGui  POWER-SYNTAX ) else ( call :mLoadTui POWER-SYNTAX )
     echo [qwdpok] = PowerUser/Syntax               
     echo [pokqwd] = Home
-    echo [qwepok] = New File
+    echo [asdpok] = New File
     echo:
-    
     set /p input=
     call :mInputChecker 0
     goto :mPowersyntax
@@ -196,6 +195,14 @@ goto :mHome
     echo                      ^|_^|
     echo:
     ::DIR PARAM
+    echo ----%1----
+    echo:
+EXIT /B
+:
+::********************************************************************************************
+:mLoadTui 
+    cls
+    echo:
     echo ----%1----
     echo:
 EXIT /B
