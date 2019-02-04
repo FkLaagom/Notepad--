@@ -25,10 +25,10 @@ cd %storagefolder%
 :
 ::********************************************************************************************
 :mList
-    if %isGui%==TRUE call :mLoadGui WRITE TO EXISTING FILE
+    if %isGui%==TRUE call :mLoadGui "WRITE TO EXISTING FILE"
     set /a counter=0
-    for %%x IN (*.txt) DO echo %%x & set counter=+1
-    if counter==0 echo (No Files Fond! & echo: ) else ( 
+    for %%x IN (*.txt) DO (echo %%x & set counter=+1)
+    if counter==0 ( echo No Files Fond! & echo: ) else ( 
         echo:
         echo To Edit Enter [filname.txt]
         set /p input=
@@ -40,7 +40,7 @@ cd %storagefolder%
     
 ::********************************************************************************************
 :mWrite
-    if %isGui%==TRUE call :mLoadGui WRITE TO NEW FILE
+    if %isGui%==TRUE call :mLoadGui "WRITE TO NEW FILE"
     echo To Stop Writing Input /quit
     echo:
     echo Enter File Name:
@@ -63,6 +63,7 @@ EXIT /B
             set /p input=
                 if %input%==/quit goto :mHome
             %input% > %~1
+        :
         goto :writer    
 goto :mHome
 EXIT /B
